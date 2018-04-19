@@ -37,7 +37,7 @@ clone_repositories()
 # pacman
 config_pacman()
 {
-  sudo vi/etc/pacman.conf
+  sudo vi /etc/pacman.conf
   echo "==> Setting pacman"
   sudo sh -c "echo '[archlinuxfr]' >> /etc/pacman.conf"
   sudo sh -c "echo 'SigLevel = Never' >> /etc/pacman.conf"
@@ -94,12 +94,6 @@ install_tex()
   $FLAGS_PACMAN 
 }
 
-copy_dotfiles()
-{
-  echo "==> Copying dotfiles"
-  cp -R -n $CONF/dotfiles/. $HOME
-}
-
 clone_dotfiles()
 {
   cd $HOME
@@ -121,22 +115,21 @@ config_other()
   sudo locale-gen
 
   sudo mkdir -p /var/games/nethack
-  sudo cp $CONF/nethack/record /var/games/nethack/record
 }
 
 copy_scripts()
 {
   echo "==> Copying scripts"
-  sudo cp $REPO/scripts/m /usr/local/bin/
-  sudo cp $REPO/scripts/um /usr/local/bin/
-  sudo cp $REPO/scripts/live-usb /usr/local/bin/
-  sudo cp $REPO/scripts/take-screenshot /usr/local/bin/
-  sudo cp $REPO/scripts/take-screenshot-s /usr/local/bin/
-  sudo chmod +x /usr/local/bin/m
-  sudo chmod +x /usr/local/bin/um
-  sudo chmod +x /usr/local/bin/live-usb
-  sudo chmod +x /usr/local/bin/take-screenshot
-  sudo chmod +x /usr/local/bin/take-screenshot-s
+  # sudo cp $REPO/scripts/m /usr/local/bin/
+  # sudo cp $REPO/scripts/um /usr/local/bin/
+  # sudo cp $REPO/scripts/live-usb /usr/local/bin/
+  # sudo cp $REPO/scripts/take-screenshot /usr/local/bin/
+  # sudo cp $REPO/scripts/take-screenshot-s /usr/local/bin/
+  # sudo chmod +x /usr/local/bin/m
+  # sudo chmod +x /usr/local/bin/um
+  # sudo chmod +x /usr/local/bin/live-usb
+  # sudo chmod +x /usr/local/bin/take-screenshot
+  # sudo chmod +x /usr/local/bin/take-screenshot-s
 }
 
 disable_beep()
