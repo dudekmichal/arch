@@ -1,0 +1,20 @@
+#!/bin/bash
+
+DIR=""
+
+main()
+{
+	DIR=$(whiptail --inputbox "Type mountpoint: " 8 78 /home/qeni/mnt --title "Mount" 3>&1 1>&2 2>&3)
+	status1=$?
+
+	if [[ $status1 = 0 ]]; then
+		sudo umount $DIR
+	else
+		exit 1
+	fi
+}
+
+main
+
+
+

@@ -1,0 +1,15 @@
+*.o
+*.a
+*.d
+*.lo
+*.obj
+*.so
+*.so.*
+*.out
+*.py[cod]
+__pychache__/
+*.pdf
+.env
+.venv
+*.log
+*.swp
