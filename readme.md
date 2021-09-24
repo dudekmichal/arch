@@ -27,7 +27,6 @@ mount /dev/sdaH /mnt/home
 
 ### check for Internet connection
 ```bash
-wifi-menu
 ping -c 3 google.com
 pacman -Sy
 ```
