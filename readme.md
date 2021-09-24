@@ -1,30 +1,17 @@
 ### bootable USB 
 ```bash
-dd bs=512 if=/path/to/iso of=/dev/sdx && sync
+dd bs=512 if=/path/to/iso of=/dev/sdx && sync  # and boot from usb in efi mode
 ```
 
-### labels 
+### enable the NTP service
 ```bash
-if your label is GPT:
-    parted /dev/sda
-    mklabel msdos
-    quit
+timedatectl set-ntp true
 ```
 
 ### partitioning 
 ```bash
-fdisk /dev/sda
-    # make mbr partition table (it's for BIOS, GPT is for UEFI)
-    n - new partition
-    ...
-    a - makes bootable
-    p - print all partitions
-    l - list of partition codes
-    t - change type of partitions
-        82 - swap
-        83 - Linux
-    d - delete partitions
-    w - write changes
+cfdisk
+> create Linux filesystem
 ```
 
 ```bash    
@@ -35,13 +22,13 @@ mkfs.ext4 /dev/sdaH (H - /home partition)
 mount /dev/sdaR /mnt
 mkdir -p /mnt/boot
 mkdir -p /mnt/home
-mount /dev/sdaH /mnt/home (H - home partition)
+mount /dev/sdaH /mnt/home
 ```
 
 ### check for Internet connection
 ```bash
 wifi-menu
-ping -c 3 wp.pl
+ping -c 3 google.com
 pacman -Sy
 ```
  
@@ -53,10 +40,10 @@ reflector --verbose -l 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 ### pacstrap script installs the base system
 ```bash
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel linux linux-firmware vim grub
 ```
 
-### generate an fstab file
+### generate a fstab file
 ```bash
 genfstab -U -p /mnt >> /mnt/etc/fstab
 cat /mnt/etc/fstab
@@ -71,10 +58,13 @@ arch-chroot /mnt
 ### regional settings for Poland
 ```bash
 echo arch > /etc/hostname
-cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
-nano /etc/locale.gen
-    > uncomment two lines with pl
+ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+vim /etc/locale.gen
+    > uncomment your locale
 locale-gen
+echo "LANG=pl_PL.UTF-8" > etc/locale.conf
+
+hwclock --systohc  # set hardware clock
 ```
 
 ### change root password
@@ -84,33 +74,29 @@ passwd
 
 ### install grub
 ```bash
-pacman -S grub
-grub-install /dev/sda
-nano /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/efi/ --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-### create an initial ramdisk environment
-```bash
-mkinitcpio -p linux
 ```
 
 ### config pacman
 ```bash
-nano /etc/pacman.conf
+vim /etc/pacman.conf
     > uncomment Color
     > uncomment Multilib (if x64)
 pacman -Syyu
 ```
 
-### install wicd stuff
+### install additional tools
 ```bash
-pacman -S wireless_tools wpa_supplicant wpa_actiond dialog
+pacman -Sy netctl dialog dhcpcd xorg xorg-server grub efibootmgr os-prober gnome gnome-tweaks gnome-calendar terminus-font neofetch zsh git sudo audacious openssh
 ```
 
+### add new user
 ```bash
-# Install dependencies for my script
-pacman -S git libnewt
+useradd -G wheel,games,audio,video,storage,power -s /bin/zsh <username>
+passwd <username>
+visudo
+> uncomment line with wheel
 ```
 
 ### reboot
@@ -119,28 +105,24 @@ exit
 umount -R /mnt
 reboot
 > boot existing OS
-> arch login: root
-> password: you've typed this earlier
 ```
 
-### add new user
+### network setup
 ```bash
-useradd -m -g users -G wheel,games,audio,video,storage,power \
--s /bin/bash <username>
-chfn <username>
-passwd <username>
-pacman -S sudo
-visudo
-> uncomment line with wheel
+cd /etc/netctl
+sudo cp examples/ethernet-dhcp ./custom-dhcp-profile
+sudo vim custom-dhcp-profile
+> set interface to your interface (eg enp4s0)
+> uncomment DHCPCDClient
+
+netctl enable custom-dhcp-profile
+systemctl enable dhcpcd.service
+sudo systemctl enable gdm.service
 reboot
-> login as a user
+ping google.com
 ```
 
-### run my own script
+### ssh keys
 ```bash
-mkdir repo
-cd repo
-git clone git@github.com:dudekmichal/arch.git 
-chmod +x $HOME/repo/arch/arch.sh
-$HOME/repo/arch/arch.sh
+ssh-keygen
 ```
