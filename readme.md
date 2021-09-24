@@ -1,3 +1,5 @@
+![N|Solid](https://raw.github.com/qeni/arch/master/img/archascii.png)
+
 ### bootable USB 
 ```bash
 dd bs=512 if=/path/to/iso of=/dev/sdx && sync  # and boot from usb in efi mode
@@ -18,7 +20,7 @@ cfdisk
 mkswap /dev/sdaS (S - swap partition)
 swapon /dev/sdaS
 mkfs.ext4 /dev/sdaR (R - /root partition)
-mkfs.ext4 /dev/sdaH (H - /home partition)
+mkfs.ext4 /dev/sdaH (H - /home partition)cd
 mount /dev/sdaR /mnt
 mkdir -p /mnt/boot
 mkdir -p /mnt/home
