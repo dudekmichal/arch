@@ -134,5 +134,5 @@ ssh-keygen
 
 ### post-installation
 ```bash
-sudo pacman -S git base-devel gcc cmake gdb
+sudo pacman -S git base-devel gcc cmake gdb code audacious gimp
 ```
