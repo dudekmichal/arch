@@ -1,8 +1,12 @@
 ![N|Solid](https://raw.github.com/qeni/arch/master/img/archascii.png)
 
-### bootable USB 
+
+
+[wiki.archlinux/installation_guide](https://wiki.archlinux.org/title/installation_guide)
+
+### bootable USB
 ```bash
-dd bs=512 if=/path/to/iso of=/dev/sdx && sync  # and boot from usb in efi mode
+dd if=/path/to/iso of=/dev/sdx && sync  # and boot from usb in efi mode
 ```
 
 ### enable the NTP service
@@ -10,17 +14,17 @@ dd bs=512 if=/path/to/iso of=/dev/sdx && sync  # and boot from usb in efi mode
 timedatectl set-ntp true
 ```
 
-### partitioning 
+### partitioning
 ```bash
 cfdisk
 > create Linux filesystem
 ```
 
-```bash    
+```bash
 mkswap /dev/sdaS (S - swap partition)
 swapon /dev/sdaS
 mkfs.ext4 /dev/sdaR (R - /root partition)
-mkfs.ext4 /dev/sdaH (H - /home partition)cd
+mkfs.ext4 /dev/sdaH (H - /home partition)
 mount /dev/sdaR /mnt
 mkdir -p /mnt/boot
 mkdir -p /mnt/home
@@ -32,10 +36,10 @@ mount /dev/sdaH /mnt/home
 ping -c 3 google.com
 pacman -Sy
 ```
- 
+
 ### choose closest mirror
 ```bash
-pacman -S reflector     
+pacman -S reflector
 reflector --verbose -l 5 --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
@@ -50,7 +54,7 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 cat /mnt/etc/fstab
 ```
 
-### chroot 
+### chroot
 This is an operation that changes the apparent root directory for the current running process and their children
 ```bash
 arch-chroot /mnt
@@ -94,7 +98,7 @@ pacman -Sy netctl dialog dhcpcd xorg xorg-server grub efibootmgr os-prober gnome
 
 ### add new user
 ```bash
-useradd -G wheel,games,audio,video,storage,power -s /bin/zsh <username>
+useradd -G wheel,games,audio,video,storage,power -s /usr/bin/zsh <username>
 passwd <username>
 visudo
 > uncomment line with wheel
@@ -126,4 +130,9 @@ ping google.com
 ### ssh keys
 ```bash
 ssh-keygen
+```
+
+### post-installation
+```bash
+sudo pacman -S git base-devel gcc cmake gdb
 ```
