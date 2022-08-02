@@ -134,5 +134,24 @@ ssh-keygen
 
 ### post-installation
 ```bash
-sudo pacman -S git base-devel gcc cmake gdb code audacious gimp
+sudo pacman -S git base-devel gcc cmake gdb code audacious gimp rofi zsh
+chsh -s /bin/zsh
+
+mkdir ~/repo
+cd ~/repo
+git clone https://github.com/dudekmichal/dotfiles.git
+>copy chosen config files
+
+sudo pacman -Syu
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+yay -Sy --noconfirm zsh-theme-powerlevel10k-git
+echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
+
+git clone https://git.suckless.org/st
+cd st
+cp ~/repo/dotfiles/.st/config.h ~/repo/st/config.h
+sudo make install
 ```
