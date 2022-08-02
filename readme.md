@@ -148,6 +148,7 @@ cd yay
 makepkg -si
 
 yay -Sy --noconfirm zsh-theme-powerlevel10k-git
+yay -Sy nerd-fonts-source-code-pro
 echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
 
 git clone https://git.suckless.org/st
