@@ -134,7 +134,11 @@ ssh-keygen
 
 ### post-installation
 ```bash
-sudo pacman -S git base-devel gcc cmake gdb code audacious gimp rofi zsh
+sudo pacman -S git base-devel gcc ncurses cmake gdb audacious gimp rofi zsh okular
+umbrello
+shutter
+kdeconnect
+leafpad
 chsh -s /bin/zsh
 
 mkdir ~/repo
@@ -148,8 +152,11 @@ cd yay
 makepkg -si
 
 yay -Sy --noconfirm zsh-theme-powerlevel10k-git
+yay -Sy --noconfirm faenza-icon-theme
 yay -Sy nerd-fonts-source-code-pro
 echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
+
+yay -Sy --noconfirm visual-studio-code-bin
 
 git clone https://git.suckless.org/st
 cd st
